@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car City Automarket - Buy & Sell Cars</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        nav a {
+            color: white;
+            margin-left: 1rem;
+            text-decoration: none;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        .car-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        .car-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .car-card:hover {
+            transform: translateY(-5px);
+        }
+        .car-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .car-info {
+            padding: 1rem;
+        }
+        .car-title {
+            font-size: 1.2rem;
+            margin: 0 0 0.5rem;
+        }
+        .car-price {
+            font-weight: bold;
+            color: #e74c3c;
+            font-size: 1.3rem;
+        }
+        .car-details {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+        }
+        .favorite-btn, .message-btn {
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .favorite-btn {
+            background-color: #f39c12;
+            color: white;
+        }
+        .message-btn {
+            background-color: #3498db;
+            color: white;
+        }
+        .filter-section {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .filter-section h3 {
+            margin-top: 0;
+        }
+        .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .filter-group select, .filter-group input {
+            padding: 0.5rem;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .close-btn {
+            float: right;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+        .message-area {
+            height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .message {
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+        }
+        .seller-message {
+            background-color: #e3f2fd;
+            margin-left: 20%;
+        }
+        .buyer-message {
+            background-color: #f5f5f5;
+            margin-right: 20%;
+        }
+        .profile-section {
+            display: none;
+        }
+        .active {
+            display: block;
+        }
+        .tab-buttons {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+        .tab-btn {
+            padding: 0.5rem 1rem;
+            background-color: #ddd;
+            border: none;
+            cursor: pointer;
+        }
+        .tab-btn.active {
+            background-color: #2c3e50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class=>CAR-CITY AutoMarket</div>
+        <nav>
+            <a href="#" id="home-link">Home</a>
+            <a href="#" id="seller-link">Seller Dashboard</a>
+            <a href="#" id="buyer-link">Buyer Profile</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <!-- Home Section -->
+        <section id="home-section" class="active">
+            <div class="filter-section">
+                <h3>Find Your Perfect Car</h3>
+                <div class="filter-group">
+                    <select id="make-filter">
+                        <option value="">All Makes</option>
+                    </select>
+                    <select id="model-filter">
+                        <option value="">All Models</option>
+                    </select>
+                    <select id="price-filter">
+                        <option value="">Any Price</option>
+                        <option value="5000000">Under Ksh5000,000</option>
+                        <option value="10000000">Under Ksh10,000,000</option>
+                        <option value="20000000">Under Ksh20,000,000</option>
+                        <option value="30000000">Under Ksh30,000,000</option>
+                    </select>
+                    <select id="mileage-filter">
+                        <option value="">Any Mileage</option>
+                        <option value="50000">Under 50,000</option>
+                        <option value="100000">Under 100,000</option>
+                        <option value="150000">Under 150,000</option>
+                    </select>
+                    <button id="apply-filters">Apply Filters</button>
+                    <button id="reset-filters">Reset</button>
+                </div>
+            </div>
+
+            <div class="car-list" id="car-list">
+                <!-- Cars will be loaded here -->
+            </div>
+        </section>
+
+        <!-- Seller Dashboard -->
+        <section id="seller-section" class="profile-section">
+            <h2>Your Listings</h2>
+            <button id="add-listing-btn">Add New Listing</button>
+            <div class="car-list" id="seller-listings">
+                <!-- Seller's listings will be loaded here -->
+            </div>
+        </section>
+
+        <!-- Buyer Profile -->
+        <section id="buyer-section" class="profile-section">
+            <div class="tab-buttons">
+                <button class="tab-btn active" data-tab="favorites">Favorites</button>
+                <button class="tab-btn" data-tab="messages">Messages</button>
+            </div>
+            
+            <div id="favorites-tab" class="tab-content active">
+                <h2>Your Favorite Cars</h2>
+                <div class="car-list" id="favorite-cars">
+                    <!-- Favorite cars will be loaded here -->
+                </div>
+            </div>
+            
+            <div id="messages-tab" class="tab-content">
+                <h2>Your Messages</h2>
+                <div id="conversations-list">
+                    <!-- Conversations will be loaded here -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Car Details Modal -->
+    <div id="car-details-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div id="car-details-content">
+                <!-- Car details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Message Modal -->
+    <div id="message-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h3>Message Seller</h3>
+            <div class="message-area" id="message-area">
+                <!-- Messages will be displayed here -->
+            </div>
+            <input type="text" id="message-input" placeholder="Type your message...">
+            <input type="number" id="offer-input" placeholder="Make an offer (optional)">
+            <button id="send-message-btn">Send</button>
+        </div>
+    </div>
+
+    <!-- Add Listing Modal -->
+    <div id="add-listing-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h3>Add New Car Listing</h3>
+            <form id="add-listing-form">
+                <div>
+                    <label>Make:</label>
+                    <input type="text" id="new-make" required>
+                </div>
+                <div>
+                    <label>Model:</label>
+                    <input type="text" id="new-model" required>
+                </div>
+                <div>
+                    <label>Year:</label>
+                    <input type="number" id="new-year" required>
+                </div>
+                <div>
+                    <label>Price ($):</label>
+                    <input type="number" id="new-price" required>
+                </div>
+                <div>
+                    <label>Mileage:</label>
+                    <input type="number" id="new-mileage" required>
+                </div>
+                <div>
+                    <label>Condition:</label>
+                    <select id="new-condition" required>
+                        <option value="Excellent">Excellent</option>
+                        <option value="Good">Good</option>
+                        <option value="Fair">Fair</option>
+                        <option value="Poor">Poor</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Image URL:</label>
+                    <input type="text" id="new-image" required>
+                </div>
+                <div>
+                    <label>Description:</label>
+                    <textarea id="new-description" required></textarea>
+                </div>
+                <button type="submit">Add Listing</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

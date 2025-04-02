@@ -1,0 +1,18 @@
+{
+    "users": [
+      {
+        "id": 1,
+        "name": "John Seller",
+        "type": "seller",
+        "email": "john@seller.com",
+        "password": "password123"
+      },
+      {
+        "id": 2,
+        "name": "Alice Buyer",
+        "type": "buyer",
+        "email": "alice@buyer.com",
+        "password": "password123"
+      }
+    ]
+}
